@@ -23,10 +23,12 @@ class Main
 		switch (a) 
 		{
 			case Action.GetRecords:
-				
+				var result = getRecords();
+				sendData( result );
 				
 			case Action.SetRecords:
-				
+				var result = setRecords();
+				sendData( result );
 				
 			default:
 				
@@ -34,6 +36,51 @@ class Main
 				
 		}
 		
+	}
+	
+	static private function getRecords () : Dynamic
+	{
+		
+		
+		
+		return null;
+	
+	}
+	
+	static private function setRecords() : Dynamic
+	{
+	
+		var params = Web.getParams();
+		var result = { };
+		
+		if (!(params.exists("positiveScore") &&
+			params.exists("negativeScore") &&
+			params.exists("userProfileUrl") &&
+			params.exists("userPhotoUrl") &&
+			params.exists("userName") &&
+			params.exists("userId")))
+			{
+				result = { error: 1, msg: "Bad arguments" };
+				return result;
+			}
+			
+		var pScore = Std.parseInt(params.get("positiveScore"));
+		var nScore = Std.parseInt(params.get("negativeScore"));
+		var userUrl = Std.string(params.get("userProfileUrl"));
+		var userPhoto = Std.string(params.get("userPhotoUrl"));
+		var userName = Std.string(params.get("userName"));
+		var userId = Std.string(params.get("userId"));
+		if (pScore == null ||
+			nScore == null ||
+			userPhoto == null ||
+			userName == null ||			
+			userId == null)
+			{
+				result = { error: 1, msg: "Bad arguments" };
+				return result;
+			}
+			
+		return result;
 	}
 	
 	
@@ -64,6 +111,6 @@ class Main
 		
 		Lib.print(Json.stringify(data));
 		
-	}
+	}	
 	
 }

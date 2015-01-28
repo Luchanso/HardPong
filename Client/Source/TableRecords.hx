@@ -34,7 +34,12 @@ class TableRecords extends Sprite
 	
 	private function Load() : Void 
 	{
+		#if Debug
+		var url = new URLRequest("http://localhost/hardpong/index.php?query=getRecords");
+		#else
 		var url = new URLRequest("http://good4dev.ru/hardpong/index.php?query=getRecords");
+		#end
+		
 		loader = new URLLoader(url);
 		loader.addEventListener(Event.COMPLETE, dataLoad);
 	
