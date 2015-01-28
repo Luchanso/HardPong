@@ -2,13 +2,16 @@ package ;
 
 
 import com.demonsters.debugger.MonsterDebugger;
+import openfl.events.Event;
+import openfl.net.URLLoader;
 import openfl.net.URLRequest;
 import openfl.display.Sprite;
 
 class TableRecords extends Sprite
 {
 
-	var records:Array<Record>;
+	private var records : Array<Record>;
+	private var loader : URLLoader;
 	
 	public function new() 
 	{
@@ -31,9 +34,17 @@ class TableRecords extends Sprite
 	
 	private function Load() : Void 
 	{
+		var url = new URLRequest("http://good4dev.ru/hardpong/index.php?query=getRecords");
+		loader = new URLLoader(url);
+		loader.addEventListener(Event.COMPLETE, dataLoad);
 	
+	}
+	
+	private function dataLoad (e:Event) : Void 
+	{
 		
-	
+		MonsterDebugger.log(loader.data);
+		
 	}
 	
 }

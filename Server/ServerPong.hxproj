@@ -46,7 +46,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Custom" />
-    <option testMovieCommand="http://localhost/index.php" />
+    <option testMovieCommand="http://localhost/hardpong/index.php" />
   </options>
   <!-- Plugin storage -->
   <storage />
