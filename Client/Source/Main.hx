@@ -4,12 +4,16 @@ package ;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.Lib;
+import openfl.display.Bitmap;
+import openfl.display.Loader;
 import openfl.events.KeyboardEvent;
+import openfl.events.MouseEvent;
 import openfl.geom.Point;
+import openfl.net.URLRequest;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFormatAlign;
-
+import com.demonsters.debugger.MonsterDebugger;
 
 enum GameState {
 	
@@ -28,23 +32,23 @@ enum Player {
 class Main extends Sprite 
 {
 	
-	var inited:Bool;
+	var inited : Bool;
 	
-	private var platform1:Platform;
-	private var platform2:Platform;
-	private var ball:Ball;
-	private var scorePlayer:Int;
-	private var scoreAI:Int;
-	private var scoreField:TextField;
-	private var messageField:TextField;
-	private var currentGameState:GameState;
-	private var arrowKeyUp:Bool;
-	private var arrowKeyDown:Bool;
-	private var platformSpeed:Int;
-	private var ballMovement:Point;
-	private var ballSpeed:Int;
-
-	/* ENTRY POINT */
+	private var platform1 : Platform;
+	private var platform2 : Platform;
+	private var ball : Ball;
+	private var scorePlayer : Int;
+	private var scoreAI : Int;
+	private var scoreField : TextField;
+	private var messageField : TextField;
+	private var currentGameState : GameState;
+	private var arrowKeyUp : Bool;
+	private var arrowKeyDown : Bool;
+	private var platformSpeed : Int;
+	private var ballMovement : Point;
+	private var ballSpeed : Int;
+	private var tableRecord : TableRecords;
+	var record:Record;
 	
 	function resize(e) 
 	{
@@ -53,7 +57,7 @@ class Main extends Sprite
 		
 	}
 	
-	function init() 
+	function init() : Void
 	{
 		
 		if (inited) return;
@@ -90,7 +94,7 @@ class Main extends Sprite
 		messageField = new TextField();
 		addChild(messageField);
 		messageField.width = 500;
-		messageField.y = 450;
+		messageField.y = 425;
 		messageField.defaultTextFormat = messageFormat;
 		messageField.selectable = false;
 		messageField.text = "Нажмите пробел, чтобы начать\nИспользутей стрелки для движения платформы";
@@ -108,9 +112,15 @@ class Main extends Sprite
 		stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 		this.addEventListener(Event.ENTER_FRAME, everyFrame);
 		
+		tableRecord = new TableRecords();
+		tableRecord.x = 0;
+		tableRecord.y = 495;		
+		
+		this.addChild(tableRecord);
+		
 	}
 	
-	private function setGameState(state:GameState):Void 
+	private function setGameState(state:GameState) : Void 
 	{
 		
 		currentGameState = state;
@@ -134,7 +144,7 @@ class Main extends Sprite
 		
 	}
 	
-	private function keyDown(event:KeyboardEvent):Void 
+	private function keyDown(event : KeyboardEvent) : Void 
 	{
 		
 		if (currentGameState == Paused && event.keyCode == 32) 
@@ -152,7 +162,7 @@ class Main extends Sprite
 		
 	}
 	
-	private function keyUp(event:KeyboardEvent):Void 
+	private function keyUp(event : KeyboardEvent) : Void 
 	{
 		
 		if (event.keyCode == 38)
@@ -166,7 +176,7 @@ class Main extends Sprite
 		
 	}
 	
-	private function everyFrame(event:Event):Void 
+	private function everyFrame(event : Event) : Void 
 	{
 		
 		if (currentGameState == Playing) 
@@ -217,47 +227,53 @@ class Main extends Sprite
 		
 	}
 	
-	private function bounceBall():Void 
+	private function bounceBall() : Void 
 	{
 		
-		var direction:Int = (ballMovement.x > 0) ? ( -1) : (1);
+		var direction:Int = (ballMovement.x > 0) ? (-1) : (1);
 		var randomAngle:Float = (Math.random() * Math.PI / 2) - 45;
 		ballMovement.x = direction * Math.cos(randomAngle) * ballSpeed;
 		ballMovement.y = Math.sin(randomAngle) * ballSpeed;
 		
 	}
 	
-	private function winGame(player:Player):Void 
+	private function winGame(player:Player) : Void 
 	{
 		
 		if (player == Human) 
 		{
+			
 			scorePlayer++;
+			
 		}
 		else
 		{
+			
 			scoreAI++;
+			
 		}
 		setGameState(Paused);
 		
 	}
 	
-	private function updateScore():Void 
+	private function updateScore() : Void
 	{
 		
 		scoreField.text = scorePlayer + ":" + scoreAI;
 		
 	}
 
-	public function new() 
+	public function new() : Void
 	{
 		
 		super();	
+		
+		MonsterDebugger.initialize(this);
 		addEventListener(Event.ADDED_TO_STAGE, added);
 		
 	}
 
-	function added(e) 
+	function added(e) : Void
 	{
 		
 		removeEventListener(Event.ADDED_TO_STAGE, added);
@@ -266,8 +282,8 @@ class Main extends Sprite
 		
 	}
 	
-	public static function main() 
-	{		
+	public static function main() : Void
+	{
 
 		Lib.current.stage.align = flash.display.StageAlign.TOP_LEFT;
 		Lib.current.stage.scaleMode = flash.display.StageScaleMode.NO_SCALE;
