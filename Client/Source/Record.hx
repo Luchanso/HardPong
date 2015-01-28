@@ -6,6 +6,7 @@ import openfl.display.Bitmap;
 import openfl.display.Loader;
 import openfl.display.Sprite;
 import openfl.events.MouseEvent;
+import openfl.filters.DropShadowFilter;
 import openfl.Lib;
 import openfl.net.URLRequest;
 import openfl.text.TextField;
@@ -59,6 +60,8 @@ class Record extends Sprite
 	private function loadComplete(e:Event) : Void
 	{
 		
+		var shadow = new DropShadowFilter(1, 90, 0, 0.4, 2, 2);
+		
 		img = cast(loader.contentLoaderInfo.content, Bitmap);
 		imgContainer = new Sprite();
 		
@@ -66,7 +69,8 @@ class Record extends Sprite
 		imgContainer.buttonMode = true;		
 		imgContainer.addEventListener(MouseEvent.CLICK, imgClick);
 		imgContainer.x = 0;
-		imgContainer.y = 25;
+		imgContainer.y = 20;
+		imgContainer.filters = [shadow];
 		
 		this.addChild(imgContainer);
 				
@@ -84,10 +88,11 @@ class Record extends Sprite
 	private function ini () : Void 
 	{
 		
-		var textFormat = new TextFormat("Arial", 18, 0xFFFFFF);		
+		var userTextFormat = new TextFormat("Tahoma", 12, 0x2B507A, true);
+		var scoreFormat = new TextFormat("Arial", 13, 0x232323, true);		
 		
 		var userNameField = new TextField();
-		userNameField.defaultTextFormat = textFormat;
+		userNameField.defaultTextFormat = userTextFormat;
 		userNameField.selectable = false;
 		userNameField.x = imgContainer.width / 2;		
 		userNameField.y = 0;
@@ -96,12 +101,12 @@ class Record extends Sprite
 		userNameField.autoSize = TextFieldAutoSize.CENTER;
 		
 		var scoreField = new TextField();
-		scoreField.defaultTextFormat = textFormat;
+		scoreField.defaultTextFormat = scoreFormat;
 		scoreField.x = imgContainer.width / 2;
-		scoreField.y = this.imgContainer.y + this.imgContainer.height + 5;		
+		scoreField.y = this.imgContainer.y + this.imgContainer.height;		
 		scoreField.selectable = false;
 		scoreField.width = 0;
-		scoreField.text = this.scoreUser + ":" + this.scoreAI;
+		scoreField.text = "1 место (" + this.scoreUser + ":" + this.scoreAI + ")";
 		scoreField.autoSize = TextFieldAutoSize.CENTER;
 		
 		addChild(userNameField);

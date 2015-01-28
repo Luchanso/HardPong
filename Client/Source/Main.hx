@@ -97,7 +97,7 @@ class Main extends Sprite
 		messageField.y = 425;
 		messageField.defaultTextFormat = messageFormat;
 		messageField.selectable = false;
-		messageField.text = "Нажмите пробел, чтобы начать\nИспользутей стрелки для движения платформы";
+		messageField.text = "Нажмите пробел, чтобы начать\nИспользуйте стрелки для движения платформы";
 		
 		scorePlayer = 0;
 		scoreAI = 0;
@@ -114,7 +114,7 @@ class Main extends Sprite
 		
 		tableRecord = new TableRecords();
 		tableRecord.x = 0;
-		tableRecord.y = 495;		
+		tableRecord.y = 495;
 		
 		this.addChild(tableRecord);
 		

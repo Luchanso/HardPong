@@ -3,7 +3,7 @@
 	
 	<meta title="Pong" package="good4dev.pong" version="1.0.0" company="Good 4 Dev" />
 	<app main="Main" path="Export" file="Pong" />
-	<window background="#000000" width="500" height="1045" />
+	<window background="#000000" width="500" height="650" />
 	
 	<source path="Source" />
 	
