@@ -3,6 +3,9 @@ package;
 import haxe.Json;
 import php.Lib;
 import php.Web;
+import sys.db.Connection;
+import sys.db.Manager;
+import sys.db.Mysql;
 
 enum Action
 {
@@ -14,8 +17,7 @@ enum Action
 }
 
 class Main 
-{
-
+{	
 	static function main() 
 	{
 		var a = Main.parse();
@@ -38,7 +40,25 @@ class Main
 		
 	}
 	
-	static private function getRecords () : Dynamic
+	static private function connectToBD() : Void 
+	{
+		
+		var cnx = Mysql.connect( { host : "localhost", user : "root", pass : "", database : "pong" } );
+		
+		Manager.cnx = cnx;
+		Manager.initialize();
+
+	}
+	
+	static private function dissconnectFromBD() : Void
+	{
+		
+		Manager.cleanup();
+		Manager.cnx.close();
+		
+	}
+	
+	static private function getRecords() : Dynamic
 	{
 		
 		
@@ -79,6 +99,19 @@ class Main
 				result = { error: 1, msg: "Bad arguments" };
 				return result;
 			}
+			
+		connectToBD();
+		
+		var records : List<Record> = Record.manager.scoreAbove(pScore / nScore);
+		var listResult = new Array();
+		
+		
+		for (record in records)
+		{			
+			listResult.push(record.toObject());
+		}
+		
+		result = listResult;	
 			
 		return result;
 	}
